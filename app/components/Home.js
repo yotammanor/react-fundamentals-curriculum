@@ -1,5 +1,6 @@
 import React from 'react'
 import {LocationForm} from "./LocationForm";
+import 'file-loader!../images/pattern.svg'
 
 class Home extends React.Component {
   render() {
