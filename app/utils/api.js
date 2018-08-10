@@ -15,8 +15,9 @@ module.exports = {
         return null
       })
   },
-  fiveDaysForcast: function (cityName) {
-    const url = window.encodeURI('http://api.openweathermap.org/data/2.5/forecast/?q=' + cityName + '&type=accurate&APPID=' + apiKey + '&cnt=5');
+  fiveDaysForecast: function (cityName) {
+    const numOfResults = 5 * 8;
+    const url = window.encodeURI('http://api.openweathermap.org/data/2.5/forecast/?q=' + cityName + '&type=accurate&APPID=' + apiKey + '&cnt=' + numOfResults);
     console.log(url);
     return axios.get(url)
       .then(response => {
