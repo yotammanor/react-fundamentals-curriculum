@@ -1,7 +1,8 @@
 import React, {Fragment} from 'react'
 import api from '../utils/api'
 import {parseUrl} from 'query-string'
-
+import {Link} from 'react-router-dom'
+import {WeatherDay} from "./WeatherDay";
 
 const parseSearchState = (location) => parseUrl(location.search);
 
@@ -23,9 +24,7 @@ class Forecast extends React.Component {
 
   componentDidUpdate({location: prevLocation}) {
     if (this.props.location !== prevLocation) {
-      console.log('changed!');
       const cityName = parseSearchState(this.props.location).query.city;
-      console.log(cityName);
       this.setState(() => ({
         loading: true,
         results: null,
@@ -40,7 +39,6 @@ class Forecast extends React.Component {
   onUpdate(cityName) {
     api.fiveDaysForecast(cityName)
       .then(results => {
-        console.log(results);
         if (results === null) {
           return this.setState(() => {
             return {
@@ -84,7 +82,7 @@ class Forecast extends React.Component {
             <p>{this.state.error}</p> : (
               <Fragment>
                 <h1 className="forecast-header">{this.state.city}</h1>
-                <Results results={this.state.results}/>
+                <Results results={this.state.results} cityName={this.state.city}/>
               </Fragment>
             )
         }
@@ -94,24 +92,28 @@ class Forecast extends React.Component {
   }
 }
 
-const Results = ({results}) => {
+const Results = ({results, cityName}) => {
   const filteredResults = results.list.filter((item, index) => index % 8 === 0);
 
   return <div className="forecast-container">
     {filteredResults.map(item => {
-      return <Result key={item.dt} date={item.dt} weather={item.weather[0]}/>
+      return <Result key={item.dt} date={item.dt} weather={item.weather[0]} cityName={cityName}/>
     })
     }
   </div>
 };
 
-const Result = ({date, weather}) => {
+const Result = ({date, weather, cityName}) => {
   const formattedDate = new Date(date * 1000).toLocaleDateString();
+  const detailLink = `/details/${cityName}/`;
   return (
-    <div className="day-container">
-      <img className="weather" src={require('../images/weather-icons/' + weather.icon + '.svg')} alt={weather.main}/>
-      <h2 className="subheader">{formattedDate}</h2>
-    </div>
+    <Link to={detailLink}>
+      <WeatherDay icon={weather.icon}
+                  main={weather.main}
+                  formattedDate={formattedDate}
+                  src={require("../images/weather-icons/" + weather.icon + ".svg")}
+      />
+    </Link>
   )
 };
 

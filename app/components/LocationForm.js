@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom';
-import api from '../utils/api'
 
 
 export class LocationForm extends Component {
@@ -13,7 +12,6 @@ export class LocationForm extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
@@ -25,14 +23,6 @@ export class LocationForm extends Component {
     })
   }
 
-  handleSubmit() {
-
-    const cityName = this.state.search || this.state.placeHolder;
-    api.currentWeather(cityName)
-      .then(function (results) {
-        console.log(results)
-      })
-  }
 
   render() {
     const cityName = this.state.search || this.state.placeHolder;

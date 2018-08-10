@@ -6,7 +6,7 @@ require('./index.css');
 import Header from './components/Header';
 import Home from './components/Home'
 import Forecast from './components/Forecast'
-
+import Details from './components/Details'
 class App extends React.Component {
   render() {
     return (
@@ -16,6 +16,8 @@ class App extends React.Component {
           <Switch>
             <Route exact path='/' component={Home}/>
             <Route path='/forecast' component={Forecast}/>
+            <Route path='/details/:cityName([^/]+)/' component={Details}/>
+            <Route path='/' component={() => <h1> Page Not Found!</h1>}/>
           </Switch>
         </div>
       </BrowserRouter>
